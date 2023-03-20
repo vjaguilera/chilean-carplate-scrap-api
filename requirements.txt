@@ -1,0 +1,6 @@
+selenium
+requests
+autopep8
+beautifulsoup4
+lxml
+html5lib
