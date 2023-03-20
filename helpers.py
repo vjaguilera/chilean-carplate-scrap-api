@@ -4,6 +4,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from scrape import go_scrape
 import time
+import os
 
 
 def set_chrome_options() -> None:
@@ -37,16 +38,22 @@ def scan_carplate_data(carplate: str,
     3. Extract the data from the redirected URL
     """
     try:
+        localdriver = bool(os.environ.get("LOCAL_DRIVER", False))
         driver = webdriver.Chrome(options=chrome_options)
-        # driver = webdriver.Chrome(
-        #     '/home/vjaguilera/Documents/personal/tech/chilean-carplate-scrap-api/chromedriver', options=chrome_options)
+        if localdriver:
+            driver = webdriver.Chrome(
+                '/home/vjaguilera/Documents/personal/tech/chilean-carplate-scrap-api/chromedriver',
+                options=chrome_options)
         print("WEB DRIVER", driver)
         driver.set_window_size(800, 600)
         print("WEB DRIVER WINDOW", driver)
         driver.get(url)
         print("WEB DRIVER NEW URL", driver)
         time.sleep(2)
-        # driver.get_screenshot_as_file("screenshot.png")
+
+        ss = bool(os.environ.get("SCREENSHOT", False))
+        if ss:
+            driver.get_screenshot_as_file("screenshot.png")
         date_element = driver.find_element(By.ID, "txtTerm")
         print("WEB DRIVER ELEMENT", date_element)
         date_element.send_keys(carplate)
