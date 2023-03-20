@@ -27,7 +27,7 @@ def get_car_data(plate):
             or len(plate) != 6):
         return {}
     data = scan_carplate_data(
-        carplate='BZYR15', chrome_options=chrome_options,
+        carplate=plate, chrome_options=chrome_options,
         url=URL)
     return data
 
@@ -42,7 +42,7 @@ def get_car_data_demo(plate):
             or len(plate) != 6):
         return {}
     data = scan_carplate_data(
-        carplate='BZYR15', chrome_options=chrome_options,
+        carplate=plate, chrome_options=chrome_options,
         url=URL)
     custom_data = {
         "model": data['car_data'].get('modelo', ''),
