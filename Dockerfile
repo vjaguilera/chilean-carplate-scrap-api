@@ -1,4 +1,5 @@
 FROM python:3.8
+# FROM --platform=linux/amd64 python:3.8
 
 # Adding trusting keys to apt for repositories
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
@@ -31,7 +32,9 @@ RUN pip install --upgrade pip
 
 RUN pip install -r requirements.txt
 
+RUN chmod +x gunicorn.sh
+
 EXPOSE 8080
 EXPOSE 80
 
-CMD ["python", "./app.py"]
+ENTRYPOINT ["./gunicorn.sh"]
