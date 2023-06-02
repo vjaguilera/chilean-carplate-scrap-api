@@ -1,5 +1,5 @@
 FROM python:3.8
-# FROM --platform=linux/amd64 python:3.8
+#FROM --platform=linux/amd64 python:3.8
 
 # Adding trusting keys to apt for repositories
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add -
@@ -32,9 +32,10 @@ RUN pip install --upgrade pip
 
 RUN pip install -r requirements.txt
 
-RUN chmod +x gunicorn.sh
-
 EXPOSE 8080
+EXPOSE 8000
 EXPOSE 80
+EXPOSE ${PORT}
 
-ENTRYPOINT ["./gunicorn.sh"]
+# Run the Django app
+CMD gunicorn --bind 0.0.0.0:${PORT:-8000} app:app --workers 4 --timeout 10000 --access-logfile '-' --error-logfile '-' --log-level debug --log-file -
